@@ -15,7 +15,10 @@ A couple examples:
 ```python
 from fleepy import Fleepy
 
-api = Fleepy(key="test")
+api = Fleepy()
+
+# /account/login
+api.account.login("one@email.com", "twopassword")
 
 # /conversation/create
 api.conversation.create(topic, emails, message)
@@ -28,6 +31,9 @@ api.search(["A", "few", "keywords"])
 
 # /search/prepare
 api.search.prepare()
+
+# /account/logout
+api.account.logout()
 ```
 
 Whenever Fleep API requests you for a "list" of something (usually space or comma delimited), just use a normal Python list, the library will do what Fleep wants behind the scenes.

@@ -18,8 +18,7 @@ class Fleepy(object):
     You can find detailed documentation about the API here:
     https://fleep.io/fleepapi/reference.html
     """
-    def __init__(self, key=None,
-                 url='https://fleep.io/api/', **kwargs):
+    def __init__(self, url='https://fleep.io/api/', **kwargs):
         """
         Defaults to https://fleep.io/api.
         """
