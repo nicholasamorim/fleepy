@@ -6,7 +6,7 @@ Overview
 
 I would like to *thank* the [University of Tartu](http://www.ut.ee/et) and the [BIIT Research Group](http://biit.cs.ut.ee/) for allowing me to publish this as an open-source library.
 
-This is an **alpha** client for the [Fleep API](https://fleep.io/fleepapi/).
+This is an **alpha** client for the [Fleep API](https://fleep.io/fleepapi/). It is compatible with Python 2.7 and 3.
 
 As of now it is a non-opinionated library. It makes a request and returns to you always a Response object.
 
