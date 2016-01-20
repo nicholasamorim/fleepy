@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
+import os
+
+
 class Avatar(object):
-    """
+    """Avatar management.
+
+    https://fleep.io/fleepapi/ref-account.html#avatar-delete
     """
     def __init__(self, server, handler='avatar'):
         self._server = server
@@ -8,22 +13,23 @@ class Avatar(object):
 
     def delete(self):
         """Deletes current avatar
+
+        :returns: Response has no data.
         """
         self._server.post('avatar/delete')
 
-    def upload(self):
+    def upload(self, image_path):
         """
-        URL: https://fleep.io/api/avatar/upload
-        Upload avatar
+        Upload avatar image.
 
-        Optional URL arguments:
-            ticket=XXX Access ticket _method=PUT This POST is actually PUT
-        PUT:
-            Content-Type, Content-Disposition are taken from main header
-
-        Output:
-        file_id
-        name
-        size
+        :param image_path: The image path.
+        :returns: Response contains file_id, name and size.
         """
-        raise NotImplementedError
+        if image_path is None:
+            file_name = os.path.basename(image_path)
+
+        with open(image_path, 'rb') as file_data:
+            files = {'files': (file_name, file_data)}
+
+            return self._server.put('avatar/upload/?ticket={}'.format(
+                self._server.ticket), files=files)

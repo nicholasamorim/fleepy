@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 class Alias(object):
-    """
+    """Email Alias management.
+
+    https://fleep.io/fleepapi/ref-alias.html
     """
     def __init__(self, server, handler='alias'):
         self._server = server

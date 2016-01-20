@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 class Conversation(object):
-    """
+    """Conversation management.
+
+    https://fleep.io/fleepapi/ref-conversation.html
     """
     def __init__(self, server, handler='conversation'):
         self._server = server

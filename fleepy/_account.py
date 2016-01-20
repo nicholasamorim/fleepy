@@ -3,7 +3,9 @@ from attrdict import AttrDict
 
 
 class Account(object):
-    """
+    """Account management.
+
+    https://fleep.io/fleepapi/ref-account.html
     """
     def __init__(self, server, handler='account'):
         self._server = server
@@ -15,7 +17,12 @@ class Account(object):
             'store': self.smtp_store})
 
     def register(self, email, display_name, password, referer=None):
-        """
+        """Create new account and send verification email.
+
+        :param email: Email.
+        :param display_name: Name to be displayed in conversations.
+        :param password: Initial password to set.
+        :param referer: Optional. Page that referred user to Fleep.
         """
         response = self._server.post(
             "account/register",
@@ -24,17 +31,34 @@ class Account(object):
         return response
 
     def reset_password(self, email):
-        """
+        """Request password reset email for active account.
+        Password is not reset yet just email with rest token is sent out.
+        User must click on link in email and then enter new passord to rest it.
+
+        :param email: The email.
         """
         return self._server.post("account/reset_password", {'email': email})
 
     def login(self, email, password, remember_me=False):
-        """
+        """Handle user login business logic.
+        If login is successful, it sets session token and returns account info.
+
+        :param email: The email.
+        :param password: User password.
+        :param remember_me: Whether user wants long-term session cookie.
+        Defaults to False.
+        :returns: Response data contains:
+
+            account_id    text  - internal account id
+            display_name  text  - name to be displayed in conversations
+            profiles      list  - stream of ContactInfo records
+            ticket        text  - Must be sent as parameter to all
+                                  subsequent api calls
         """
         return self._server.login(email, password, remember_me)
 
     def logout(self):
-        """
+        """Close session.
         """
         return self._server.logout()
 
