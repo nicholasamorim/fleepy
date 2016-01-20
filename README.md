@@ -1,12 +1,26 @@
-### Fleepy - A Pythonic Fleep API Client
+Fleepy - A Pythonic Fleep API Client
+=====================================
+
+Overview
+---------
 
 I would like to *thank* the [University of Tartu](http://www.ut.ee/et) and the [BIIT Research Group](http://biit.cs.ut.ee/) for allowing me to publish this as an open-source library.
 
-This is an **alpha** client for the [Fleep Api](https://fleep.io/fleepapi/).
+This is an **alpha** client for the [Fleep API](https://fleep.io/fleepapi/).
 
-So far, it is a non-opinionated library. It makes a request and returns to you always a Response object. In that object you can access status_code, data, headers and cookies. So any function you call we are not wrapping it in anything but a Response.
+As of now it is a non-opinionated library. It makes a request and returns to you always a Response object.
 
-So far it has two dependencies, namely Requests and attrdict. I am planning to remove Requests in the near future.
+Response is simply a namedtuple. In that you can access attributes status_code, data, headers and cookies. So any method you call we are not wrapping it in anything but a Response.
+
+Installation
+-------------
+
+#### Manual (Installation from PyPI coming soon)
+
+    git clone https://github.com/nicholasamorim/fleepy.git
+    python setup.py install
+
+So far it has two dependencies, namely [Requests](http://docs.python-requests.org/en/latest/) and [attrdict](https://github.com/bcj/AttrDict). I am planning to remove Requests in the near future.
 
 The main goal of this client was to reflect the API as accurate as possible while keeping it Pythonic enough. The main thing to observe is that every slash that you see in the address of the resource you want to use, you translate that to a dot.
 
@@ -65,7 +79,7 @@ api.conversation.create(
 api.account.logout()
 ```
 
-##### File upload.
+##### File upload
 
 ```python
 from fleepy import Fleepy
