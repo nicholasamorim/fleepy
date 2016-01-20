@@ -38,6 +38,45 @@ api.account.logout()
 
 Whenever Fleep API requests you for a "list" of something (usually space or comma delimited), just use a normal Python list, the library will do what Fleep wants behind the scenes.
 
+#### Examples
+
+##### Creating a chat room with topic and an initial message.
+
+The example below logins, creates a chat room with three people and sends
+a message. The message uses some of Fleep styling features, check them out [here](https://fleep.zendesk.com/hc/en-us/articles/201526221-How-can-I-add-text-formatting-to-my-messages-).
+
+```python
+from fleepy import Fleepy
+
+api = Fleepy()
+api.account.login("your@email.com", "yourpassword")
+
+
+api.conversation.create(
+    topic='This is a Room Topic',
+    emails=['your@email.com', 'guest1@email.com', 'guest2@email.com'],
+    message="""*Hello*, everyone!
+
+    Something has just been posted in our Issue tracker.
+
+    http://issue.tracker.com<<Go To Issue>>
+    """)
+
+api.account.logout()
+```
+
+##### File upload.
+
+```python
+from fleepy import Fleepy
+
+api = Fleepy()
+api.account.login("your@email.com", "yourpassword")
+
+api.file.upload('/path/to/afile.jpg')
+api.account.logout()
+```
+
 More and proper documentation to come.
 
 ##### To-Do:
