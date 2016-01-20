@@ -1,6 +1,8 @@
 Fleepy - A Pythonic Fleep API Client
 =====================================
 
+![Travis CI Master](https://travis-ci.org/nicholasamorim/fleepy.svg?branch=master)
+
 Overview
 ---------
 
@@ -98,6 +100,6 @@ More and proper documentation to come.
 
 ##### To-Do:
 
-- Add Tests
+- Add more tests.
 - Implement the Info handler.
-- Create proper documentation
+- Create proper documentation.
