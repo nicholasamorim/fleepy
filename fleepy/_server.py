@@ -22,16 +22,18 @@ Response = namedtuple(
 
 
 class HTTPClient(object):
-    """An abstraction of an HTTP
+    """An abstraction of an HTTP client.
     """
     @classmethod
-    def request(cls, method, url, data=None, headers=None, cookies=None):
+    def request(cls, method, url, data=None,
+                headers=None, cookies=None, files=None):
         """
         :param method: A HTTP method.
         :param url: The URL to call.
         :param data: The data to be sent as body.
         :param headers: Any headers.
         :param cookies: Any cookies.
+        :param files: A list of open files, if any.
         :returns: A `requests.models.Response` object.
         """
         method = method.lower()
@@ -41,9 +43,10 @@ class HTTPClient(object):
         requester = getattr(requests, method)
         response = requester(
             url,
+            data=data,
             headers=headers,
             cookies=cookies,
-            data=data)
+            files=files)
 
         return response
 
@@ -58,12 +61,11 @@ class Server(object):
         self._client = client or HTTPClient()
         self._serializer = serializer
 
-        self._ticket = None
+        self.ticket = None
         self._account_id = None
         self._cookies = {}
         self._account_id = None
         self._display_name = None
-        self._headers = {"Content-Type": "application/json"}
 
         self._logger = logging.getLogger(__name__)
 
@@ -79,35 +81,46 @@ class Server(object):
         """
         return self._display_name
 
-    def call(self, method, endpoint, parameters=None, raise_if_not_200=False):
+    def call(self, method, endpoint, parameters=None, files=None, **kwargs):
+        """
+        :param files: A dictionary of files.
+        :param raise_if_not_200: If True will raise ValueError if response
+        is not 200. Defaults to False.
+        """
         if parameters is None:
             parameters = {}
 
-        parameters.setdefault('ticket', self._ticket)
         url = urljoin(self._url, endpoint)
+
+        if files is not None:
+            headers = {"Content-Type": "multipart/form-data"}
+        else:
+            parameters.setdefault('ticket', self.ticket)
+            headers = {"Content-Type": "application/json"}
 
         self.log(
             'Request to {} using {} method. '
             'Headers: {} / Cookies: {} / Data: {}'.format(
-                url, method, self._headers, self._cookies, parameters))
+                url, method, headers, self._cookies, parameters))
 
         response = self._client.request(
             method, url,
             data=self._serialize(parameters),
-            headers=self._headers,
-            cookies=self._cookies)
+            headers=headers,
+            cookies=self._cookies,
+            files=files)
 
         if response.status_code != 200:
             self.log(
                 "Error making request to {}. Error below:\n".format(
                     url, response.text), level='error')
-            if raise_if_not_200:
+            if kwargs.get('raise_if_not_200', False):
                 raise ValueError(response.text)
 
         try:
             data = response.json()
         except ValueError:
-            data = response.text()
+            data = response.text
 
         return Response(
             response.status_code, data,
@@ -134,7 +147,7 @@ class Server(object):
 
         self._cookies['token_id'] = response.cookies['token_id']
         data = response.data
-        self._ticket = data['ticket']
+        self.ticket = data['ticket']
         self._profiles = data['profiles']
         self._account_id = data['account_id']
         self._display_name = data['display_name']
@@ -157,9 +170,11 @@ class Server(object):
     def _deserialize(self, data):
         """
         """
-        return self._serializer.loads(data)
+        if data:
+            return self._serializer.loads(data)
 
     def _serialize(self, data):
         """
         """
-        return self._serializer.dumps(data)
+        if data:
+            return self._serializer.dumps(data)
