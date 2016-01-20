@@ -38,7 +38,7 @@ class HTTPClient(object):
         """
         method = method.lower()
         if method.lower() not in ('post', 'get', 'put', 'patch', 'delete'):
-            raise ValueError("method arg needs to be a HTTP method")
+            raise ValueError("Invalid HTTP method")
 
         requester = getattr(requests, method)
         response = requester(
@@ -56,7 +56,8 @@ class Server(object):
     the API with a HTTP client and takes care of details like maintaining
     the login session on each request.
     """
-    def __init__(self, url, client=None, serializer=json):
+    def __init__(self, url='https://fleep.io/api/',
+                 client=None, serializer=json):
         self._url = url
         self._client = client or HTTPClient()
         self._serializer = serializer
@@ -127,10 +128,20 @@ class Server(object):
             response.headers, response.cookies)
 
     def log(self, msg, level='debug'):
-        """
+        """Logs a message using specified level. Defaults to debug.
         """
         logger = getattr(self._logger, level)
         logger(msg)
+
+    def _set_session(self, account_id, token_id,
+                     ticket, display_name, profiles):
+        """Sets internal data relevant to keeping the session alive.
+        """
+        self._cookies['token_id'] = token_id
+        self.ticket = ticket
+        self._profiles = profiles
+        self._account_id = account_id
+        self._display_name = display_name
 
     def login(self, email, password, remember_me=False):
         """Performs the login in Fleep server and store relevant
@@ -145,16 +156,21 @@ class Server(object):
             "account/login",
             {'email': email, 'password': password, 'remember_me': remember_me})
 
-        self._cookies['token_id'] = response.cookies['token_id']
         data = response.data
-        self.ticket = data['ticket']
-        self._profiles = data['profiles']
-        self._account_id = data['account_id']
-        self._display_name = data['display_name']
+        self._set_session(
+            data['account_id'],
+            response.cookies['token_id'],
+            data['ticket'],
+            data['display_name'],
+            data['profiles'])
 
         return response
 
     def logout(self):
+        """Logouts from user account.
+        """
+        if self.ticket is None:
+            raise ValueError('Not Logged In Yet!')
         return self.post('account/logout')
 
     def post(self, endpoint, *args, **kwargs):
@@ -168,13 +184,13 @@ class Server(object):
         return self.call('PUT', endpoint, *args, **kwargs)
 
     def _deserialize(self, data):
-        """
+        """Deserializes data using serializer passed. Defaults to json.
         """
         if data:
             return self._serializer.loads(data)
 
     def _serialize(self, data):
-        """
+        """Serializes data using serializer passed. Defaults to json.
         """
         if data:
             return self._serializer.dumps(data)
