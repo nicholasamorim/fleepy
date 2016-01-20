@@ -22,6 +22,8 @@ Installation
 
 So far it has two dependencies, namely [Requests](http://docs.python-requests.org/en/latest/) and [attrdict](https://github.com/bcj/AttrDict). I am planning to remove Requests in the near future.
 
+Goal
+---------
 The main goal of this client was to reflect the API as accurate as possible while keeping it Pythonic enough. The main thing to observe is that every slash that you see in the address of the resource you want to use, you translate that to a dot.
 
 A couple examples:
@@ -52,7 +54,8 @@ api.account.logout()
 
 Whenever Fleep API requests you for a "list" of something (usually space or comma delimited), just use a normal Python list, the library will do what Fleep wants behind the scenes.
 
-#### Examples
+Examples
+--------
 
 ##### Creating a chat room with topic and an initial message.
 
