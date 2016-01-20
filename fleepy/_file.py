@@ -12,7 +12,7 @@ class Upload(object):
 
         Upload a file.
 
-        .. warning:: According to Fleep Docs, their endpoint supports
+        .. note:: According to Fleep Docs, their endpoint supports
         multiple-files, however, even though it doesn't fail, it seems to
         always return a single file_id. Until we clear what happens here,
         this method is supporting single-file upload only.
