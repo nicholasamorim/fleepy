@@ -1,7 +1,7 @@
 Fleepy - A Pythonic Fleep API Client
 =====================================
 
-![Travis CI Master](https://travis-ci.org/nicholasamorim/fleepy.svg?branch=master)
+[![Build Status](https://travis-ci.org/nicholasamorim/fleepy.svg?branch=master)](https://travis-ci.org/nicholasamorim/fleepy)
 
 Overview
 ---------
