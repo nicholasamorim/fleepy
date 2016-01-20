@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
-from _task import Task
-from _info import Info
-from _file import File
-from _alias import Alias
-from _avatar import Avatar
-from _server import Server
-from _search import Search
-from _account import Account
-from _contact import Contact
-from _message import Message
-from _conversation import Conversation
+from __future__ import absolute_import
+
+from fleepy._task import Task
+from fleepy._info import Info
+from fleepy._file import File
+from fleepy._alias import Alias
+from fleepy._avatar import Avatar
+from fleepy._server import Server
+from fleepy._search import Search
+from fleepy._account import Account
+from fleepy._contact import Contact
+from fleepy._message import Message
+from fleepy._conversation import Conversation
 
 
 class Fleepy(object):
@@ -24,7 +26,7 @@ class Fleepy(object):
         """
         self._url = url
         self._compress = kwargs.get('compress', False)
-        self._server = Server(self._url)
+        self._server = kwargs.get('server', Server(self._url))
         self._initialize_handlers()
 
     def _initialize_handlers(self):
