@@ -43,7 +43,5 @@ More and proper documentation to come.
 ##### To-Do:
 
 - Add Tests
-- Implement File Upload
-- Implement Avatar Upload
 - Implement the Info handler.
 - Create proper documentation
