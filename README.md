@@ -17,6 +17,10 @@ Response is simply a namedtuple. In that you can access attributes status_code, 
 Installation
 -------------
 
+#### Via PIP
+
+    pip install fleepy
+
 #### Manual (Installation from PyPI coming soon)
 
     git clone https://github.com/nicholasamorim/fleepy.git
