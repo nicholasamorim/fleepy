@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="Fleepy",
-    version='0.1',
+    version='0.2.1',
     description="Pythonic Fleep API Client",
     author="Nicholas Amorim",
     author_email="nicholas@alienretro.com",
