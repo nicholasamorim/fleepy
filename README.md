@@ -21,7 +21,7 @@ Installation
 
     pip install fleepy
 
-#### Manual (Installation from PyPI coming soon)
+#### Manual
 
     git clone https://github.com/nicholasamorim/fleepy.git
     python setup.py install
